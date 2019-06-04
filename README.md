@@ -2,7 +2,7 @@ In the following readme I'd like to explain some of the design decisisons I took
 As always, you must be running Java 8 or higher to run this program-
 it makes use of Java 8 streams, and will not compile under Java 7.
 
-##CommandParser
+## CommandParser
 Every command passes through the ```CommandParser``` class. 
 This class does some string massaging, and separates the user input 
 into a ```List``` of subcommands. It also throws exceptions all the way
@@ -10,13 +10,13 @@ Moreover, for non-redirect commands, it appends an empty string to the end of th
 for the ```StreamFilter```.
 
 
-##StreamFilter. 
+## StreamFilter. 
 This filter is always the last filter, even in the case of "cd"- in that case,
 it prints nothing. Otherwise it prints to either standard out or to a file.
 Importantly, it implements ```NotifyingFilter```, and passes a message back 
 to the ```ProcessManager``` class when it is done.
 
-##ProcessManager
+## ProcessManager
 This class makes a thread for each filter, then executes them. 
 Importantly, it assigns each background command a process ID and maintains a mapping 
 from process ID's to the command the user typed in to run the background job. Each 
@@ -25,7 +25,7 @@ of the StreamFilter's completion, removes the command keyed by the pid from
 the mapping. 
 
 
-##Other design decisions:   
+## Other design decisions:   
    *    I did not use isDone. Rather, I used the poison pill approach.
         This approach has each filter place a special string, in this case a v4 UUID,
         in its output queue when it has gone through its input. 
